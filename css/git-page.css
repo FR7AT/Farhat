@@ -16,10 +16,6 @@
   border-radius: 8px;
 }
 
-.git-repo a {
-  color: rgb(0 114 255) !important;
-}
-
 .git-repo-name {
   font-size: 12px;
   opacity: 0.8;
