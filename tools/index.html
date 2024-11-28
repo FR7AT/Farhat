@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OP TOOLS - CONVERT TEXT</title>
+    <link rel="icon" type="image/png" href="https://i.imgur.com/m8KZndA.png">
+    <meta name="description" content="أداة بسيطة لتحويل النصوص بين الحالات المختلفة مثل الأحرف الكبيرة والصغيرة والعناوين.">
+    <meta name="keywords" content="تحويل النصوص, حالات النصوص, UPPER CASE, lower case, عنوان, نصوص">
+    <meta name="author" content="OP TOOLS">
+    <meta name="robots" content="index, follow">
+    <meta property="og:title" content="OP TOOLS - Convert Text">
+    <meta property="og:description" content="أداة بسيطة لتحويل النصوص بين الحالات المختلفة بسهولة.">
+    <meta property="og:image" content="https://i.imgur.com/ZYvqili.png">
+    <meta property="og:url" content="https://opal3ab.com">
+    <meta property="og:type" content="website">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="OP TOOLS - Convert Text">
+    <meta name="twitter:description" content="أداة لتحويل النصوص بين حالات مختلفة مثل الأحرف الكبيرة والصغيرة.">
+    <meta name="twitter:image" content="https://i.imgur.com/ZYvqili.png">
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, #f5f7fa, #c3cfe2);
+            display: flex;
+            flex-direction: row;
+            height: 100vh;
+        }
+
+        .content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            flex: 1;
+            margin-left: 270px; /* Space for the sidebar */
+        }
+
+        h1 {
+            color: #3d3d3d;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+
+        textarea {
+            width: 80%;
+            max-width: 800px;
+            height: 150px;
+            font-size: 18px;
+            padding: 10px 15px;
+            margin-bottom: 20px;
+            border: none;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            outline: none;
+            background-color: #ffffff;
+            transition: box-shadow 0.3s ease-in-out;
+            resize: none;
+        }
+
+        textarea:focus {
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+        }
+
+        .button-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        button {
+            background: linear-gradient(135deg, #4caf50, #81c784);
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            border-radius: 8px;
+            transition: transform 0.2s, background 0.3s;
+        }
+
+        button:hover {
+            transform: scale(1.1);
+            background: linear-gradient(135deg, #388e3c, #66bb6a);
+        }
+
+        button:active {
+            transform: scale(1.05);
+        }
+
+        @media (max-width: 600px) {
+            textarea {
+                width: 95%;
+                height: 120px;
+            }
+
+            button {
+                width: 90%;
+            }
+        }
+
+        .sidebar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 250px;
+            height: 100%;
+            background: #2c3e50;
+            color: #ecf0f1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px 10px;
+        }
+
+        .sidebar img {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            margin-bottom: 10px;
+        }
+
+        .sidebar h2 {
+            color: #ecf0f1;
+            font-size: 16px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .sidebar button {
+            background: #34495e;
+            color: #ecf0f1;
+            border: none;
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 5px;
+            cursor: pointer;
+            text-align: center;
+            font-size: 16px;
+            width: 80%;
+            transition: background 0.3s ease;
+        }
+
+        .sidebar button:hover {
+            background: #1abc9c;
+        }
+    </style>
+    <script>
+        function transformText(caseType) {
+            let textBox = document.getElementById("text");
+            let text = textBox.value;
+
+            switch (caseType) {
+                case 'sentence':
+                    textBox.value = text.charAt(0).toUpperCase() + text.slice(1).toLowerCase();
+                    break;
+                case 'lower':
+                    textBox.value = text.toLowerCase();
+                    break;
+                case 'upper':
+                    textBox.value = text.toUpperCase();
+                    break;
+                case 'capitalize':
+                    textBox.value = text.toLowerCase().replace(/\b\w/g, char => char.toUpperCase());
+                    break;
+                case 'title':
+                    textBox.value = text.replace(/\w\S*/g, word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase());
+                    break;
+                case 'alternate':
+                    let alternateText = '';
+                    let toggle = true;
+                    for (let char of text) {
+                        alternateText += toggle ? char.toUpperCase() : char.toLowerCase();
+                        toggle = !toggle;
+                    }
+                    textBox.value = alternateText;
+                    break;
+                case 'inverse':
+                    let inverseText = '';
+                    for (let char of text) {
+                        inverseText += char === char.toUpperCase() ? char.toLowerCase() : char.toUpperCase();
+                    }
+                    textBox.value = inverseText;
+                    break;
+            }
+        }
+    </script>
+</head>
+<body>
+    <div class="sidebar">
+        <img src="https://media.giphy.com/media/zyfq9pdkYPMkGMTDFm/giphy.gif" alt="Welcome">
+        <h2>Welcome to tools</h2>
+        <button onclick="window.open('https://fr7at.github.io/TOOLS/gmail', '_self')">Gmail Generator</button>
+        <button onclick="window.open('https://fr7at.github.io/TOOLS/', '_self')">Convert text</button>
+        <button onclick="window.open('https://fr7at.github.io/TOOLS/hex', '_self')">Convert Hex</button>
+        <button onclick="window.open('https://fr7at.github.io/TOOLS/log', '_self')">Log Viewer</button>
+    </div>
+    <div class="content">
+        <h1></h1>
+        <textarea id="text"></textarea>
+        <div class="button-container">
+            <button onclick="transformText('sentence')">Sentence Case</button>
+            <button onclick="transformText('lower')">lower case</button>
+            <button onclick="transformText('upper')">UPPER CASE</button>
+            <button onclick="transformText('capitalize')">Capitalized Case</button>
+            <button onclick="transformText('title')">Title Case</button>
+            <button onclick="transformText('alternate')">aLtErNaTiNg CaSe</button>
+            <button onclick="transformText('inverse')">InVeRsE CaSe</button>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OP TOOLS - CONVERT HEX</title>
+    <link rel="icon" type="image/png" href="https://i.imgur.com/m8KZndA.png">
+    <meta name="description" content="أداة تحويل النصوص من Hexadecimal إلى ASCII بسهولة وسرعة باستخدام واجهة بسيطة.">
+    <meta name="keywords" content="Convert Hex to ASCII, Hexadecimal Converter, أدوات تحويل, OP TOOLS">
+    <meta name="author" content="OP TOOLS">
+    <meta name="robots" content="index, follow">
+    <meta property="og:title" content="OP TOOLS - CONVERT HEX">
+    <meta property="og:description" content="أداة رائعة لتحويل النصوص من الهيكس إلى ASCII بسهولة تامة.">
+    <meta property="og:image" content="https://i.imgur.com/ZYvqili.png">
+    <meta property="og:url" content="https://opal3ab.com">
+    <meta property="og:type" content="website">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="OP TOOLS - CONVERT HEX">
+    <meta name="twitter:description" content="حوّل النصوص من Hexadecimal إلى ASCII بسرعة واحترافية.">
+    <meta name="twitter:image" content="https://i.imgur.com/ZYvqili.png">
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, #f5f7fa, #c3cfe2);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            height: 100vh;
+        }
+
+        h1 {
+            color: #3d3d3d;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+            margin-top: 20px;
+            margin-bottom: 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            width: 90%;
+            background: #ffffff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            margin-left: 270px;
+        }
+
+        textarea {
+            width: calc(100% - 20px);
+            margin: 0 auto;
+            height: 400px;
+            font-size: 14px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            background-color: #f9f9f9;
+            resize: none;
+            margin-bottom: 20px;
+        }
+
+        button {
+            background: linear-gradient(135deg, #4caf50, #81c784);
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            border-radius: 8px;
+            transition: transform 0.2s, background 0.3s;
+        }
+
+        button:hover {
+            transform: scale(1.1);
+        }
+
+        button:active {
+            transform: scale(1.05);
+        }
+
+        button.copied {
+            background: linear-gradient(135deg, #ff9800, #ffb74d);
+        }
+
+        .sidebar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 250px;
+            height: 100%;
+            background: #2c3e50;
+            color: #ecf0f1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px 10px;
+        }
+
+        .sidebar img {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            margin-bottom: 10px;
+        }
+
+        .sidebar h2 {
+            color: #ecf0f1;
+            font-size: 16px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .sidebar button {
+            background: #34495e;
+            color: #ecf0f1;
+            border: none;
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 5px;
+            cursor: pointer;
+            text-align: center;
+            font-size: 16px;
+            width: 80%;
+            transition: background 0.3s ease;
+        }
+
+        .sidebar button:hover {
+            background: #1abc9c;
+        }
+    </style>
+</head>
+<body>
+    <div class="sidebar">
+        <img src="https://media.giphy.com/media/zyfq9pdkYPMkGMTDFm/giphy.gif" alt="Welcome">
+        <h2>Welcome to tools</h2>
+        <button onclick="window.open('https://fr7at.github.io/TOOLS/gmail', '_self')">Gmail Generator</button>
+        <button onclick="window.open('https://fr7at.github.io/TOOLS/', '_self')">Convert text</button>
+        <button onclick="window.open('https://fr7at.github.io/TOOLS/hex', '_self')">Convert Hex</button>
+        <button onclick="window.open('https://fr7at.github.io/TOOLS/log', '_self')">Log Viewer</button>
+    </div>
+    <h1></h1>
+    <div class="container">
+        <textarea id="hexInput" placeholder=""></textarea>
+        <button id="actionButton" onclick="handleAction()">Convert</button>
+    </div>
+    <script>
+        let isConverted = false;
+
+        function handleAction() {
+            if (!isConverted) {
+                convertHexToAscii();
+            } else {
+                copyResult();
+            }
+        }
+
+        function convertHexToAscii() {
+            const input = document.getElementById("hexInput").value;
+            const textarea = document.getElementById("hexInput");
+            const actionButton = document.getElementById("actionButton");
+
+            const cleanedInput = input.replace(/[^0-9A-Fa-f]/g, '');
+
+            try {
+                if (cleanedInput.length % 2 !== 0) {
+                    throw new Error("Invalid Hexadecimal String");
+                }
+
+                const asciiString = cleanedInput
+                    .match(/.{1,2}/g)
+                    .map(byte => String.fromCharCode(parseInt(byte, 16)))
+                    .join('');
+
+                textarea.value = asciiString;
+                actionButton.textContent = "Copy";
+                isConverted = true;
+            } catch (e) {
+                textarea.value = "Error: Invalid Hexadecimal Input!";
+            }
+        }
+
+        function copyResult() {
+            const textarea = document.getElementById("hexInput");
+            textarea.select();
+            document.execCommand("copy");
+            const actionButton = document.getElementById("actionButton");
+            actionButton.textContent = "Copied!";
+            actionButton.classList.add("copied");
+
+            setTimeout(() => {
+                actionButton.textContent = "Copy";
+                actionButton.classList.remove("copied");
+            }, 2000);
+        }
+    </script>
+</body>
+</html>

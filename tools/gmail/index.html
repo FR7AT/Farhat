@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OP TOOLS - GMAIL GENERATOR</title>
+    <link rel="icon" type="image/png" href="https://i.imgur.com/m8KZndA.png">
+    <meta name="description" content="مولد Gmail مجاني لإنشاء عناوين بريد إلكتروني متنوعة باستخدام النقاط. مثالي للاستخدامات المتعددة.">
+    <meta name="keywords" content="مولد Gmail, إنشاء بريد إلكتروني, عناوين Gmail, أدوات Gmail, توليد الإيميلات">
+    <meta name="author" content="OP TOOLS">
+    <meta name="robots" content="index, follow">
+    <meta property="og:title" content="OP TOOLS - GMAIL GENERATOR">
+    <meta property="og:description" content="أداة رائعة لتوليد عناوين بريد إلكتروني متعددة باستخدام النقاط. مثالية للاستخدام الشخصي أو التجاري.">
+    <meta property="og:image" content="https://i.imgur.com/ZYvqili.png">
+    <meta property="og:url" content="https://opal3ab.com">
+    <meta property="og:type" content="website">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="OP TOOLS - GMAIL GENERATOR">
+    <meta name="twitter:description" content="أداة لتوليد عناوين Gmail المتعددة بسهولة واحترافية.">
+    <meta name="twitter:image" content="https://i.imgur.com/ZYvqili.png">
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, #f5f7fa, #c3cfe2);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            height: 100vh;
+        }
+
+        h1 {
+            color: #3d3d3d;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            width: 90%;
+            background: #ffffff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            margin-left: 270px; /* Adjust for the sidebar */
+        }
+
+        .input-group {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        input, .domain {
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        input {
+            flex: 1;
+            border-top-right-radius: 0;
+            border-bottom-right-radius: 0;
+            text-align: left;
+        }
+
+        .domain {
+            background-color: #e9ecef;
+            border-top-left-radius: 0;
+            border-bottom-left-radius: 0;
+        }
+
+        textarea {
+            width: calc(100% - 20px);
+            margin: 0 auto;
+            height: 300px;
+            font-size: 16px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            background-color: #f9f9f9;
+            resize: none;
+            overflow-y: auto;
+            overflow-x: hidden;
+            text-align: left;
+            line-height: 1.5;
+            margin-bottom: 20px;
+        }
+
+        .button-container {
+            display: flex;
+            justify-content: center;
+        }
+
+        button {
+            background: linear-gradient(135deg, #4caf50, #81c784);
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            border-radius: 8px;
+            transition: transform 0.2s, background 0.3s;
+        }
+
+        button.copied {
+            background: linear-gradient(135deg, #ff9800, #ffb74d);
+        }
+
+        button:hover {
+            transform: scale(1.1);
+        }
+
+        button:active {
+            transform: scale(1.05);
+        }
+
+        .sidebar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 250px;
+            height: 100%;
+            background: #2c3e50;
+            color: #ecf0f1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px 10px;
+        }
+
+        .sidebar img {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            margin-bottom: 10px;
+        }
+
+        .sidebar h2 {
+            color: #ecf0f1;
+            font-size: 16px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .sidebar button {
+            background: #34495e;
+            color: #ecf0f1;
+            border: none;
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 5px;
+            cursor: pointer;
+            text-align: center;
+            font-size: 16px;
+            width: 80%;
+            transition: background 0.3s ease;
+        }
+
+        .sidebar button:hover {
+            background: #1abc9c;
+        }
+    </style>
+    <script>
+        let isGenerated = false;
+
+        function cleanInput() {
+            const usernameField = document.getElementById("username");
+            const value = usernameField.value;
+            if (value.includes("@")) {
+                usernameField.value = value.split("@")[0];
+            }
+        }
+
+        function generateEmails() {
+            if (isGenerated) {
+                copyAllEmails();
+                return;
+            }
+
+            const username = document.getElementById("username").value.trim();
+            const outputArea = document.getElementById("output");
+            const countSpan = document.getElementById("count");
+            const domain = "gmail.com";
+
+            if (!username) {
+                return;
+            }
+
+            const combinations = new Set();
+            const addDots = (str, idx) => {
+                if (idx === str.length - 1) {
+                    combinations.add(str);
+                    return;
+                }
+                addDots(str, idx + 1);
+                addDots(str.slice(0, idx + 1) + "." + str.slice(idx + 1), idx + 2);
+            };
+
+            addDots(username, 0);
+
+            const emails = Array.from(combinations).map(name => `${name}@${domain}`);
+            if (emails.length > 1000) {
+                emails.length = 1000;
+            }
+
+            outputArea.value = emails.join("\n");
+            countSpan.textContent = emails.length;
+            const generateButton = document.getElementById("generateButton");
+            generateButton.textContent = "Copy";
+            isGenerated = true;
+        }
+
+        function copyAllEmails() {
+            const outputArea = document.getElementById("output");
+            outputArea.select();
+            document.execCommand("copy");
+            const generateButton = document.getElementById("generateButton");
+            generateButton.textContent = "Copied!";
+            generateButton.classList.add("copied");
+
+            setTimeout(() => {
+                generateButton.textContent = "Copy";
+                generateButton.classList.remove("copied");
+            }, 2000);
+        }
+    </script>
+</head>
+<body>
+    <div class="sidebar">
+        <img src="https://media.giphy.com/media/zyfq9pdkYPMkGMTDFm/giphy.gif" alt="Welcome">
+        <h2>Welcome to tools</h2>
+        <button onclick="window.open('https://fr7at.github.io/TOOLS/gmail', '_self')">Gmail Generator</button>
+        <button onclick="window.open('https://fr7at.github.io/TOOLS/', '_self')">Convert text</button>
+        <button onclick="window.open('https://fr7at.github.io/TOOLS/hex', '_self')">Convert Hex</button>
+        <button onclick="window.open('https://fr7at.github.io/TOOLS/log', '_self')">Log Viewer</button>
+    </div>
+    <h1></h1>
+    <div class="container">
+        <div class="input-group">
+            <input type="text" id="username" oninput="cleanInput()">
+            <span class="domain">@gmail.com</span>
+        </div>
+        <textarea id="output" readonly></textarea>
+        <div class="button-container">
+            <button id="generateButton" onclick="generateEmails()">Generate</button>
+        </div>
+        <p>Total: <span id="count">0</span></p>
+    </div>
+</body>
+</html>
